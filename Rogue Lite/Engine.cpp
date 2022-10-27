@@ -100,11 +100,35 @@ bool Engine::Init() // hàm khởi tạo trò chơi, nếu khởi tạo thành c
 	TextureManager::GetInstance()->Load("scoreClick", "images\\background\\scoreClick.png");
 	TextureManager::GetInstance()->Load("quitClick", "images\\background\\quitClick.png");
 
+	// menu
+	TextureManager::GetInstance()->Load("bgMenu", "images\\background\\bgMenu.jpg");
+	TextureManager::GetInstance()->Load("play", "images\\background\\play.png");
+	TextureManager::GetInstance()->Load("tutorial", "images\\background\\tutorial.png");
+	TextureManager::GetInstance()->Load("score", "images\\background\\score.png");
+	TextureManager::GetInstance()->Load("quit", "images\\background\\quit.png");
+
+	//menu click
+	TextureManager::GetInstance()->Load("playClick", "images\\background\\playClick.png");
+	TextureManager::GetInstance()->Load("tutorialClick", "images\\background\\tutorialClick.png");
+	TextureManager::GetInstance()->Load("scoreClick", "images\\background\\scoreClick.png");
+	TextureManager::GetInstance()->Load("quitClick", "images\\background\\quitClick.png");
+
+	// tutorial bg, socre bg
+	TextureManager::GetInstance()->Load("tutorialBG", "images\\background\\tutorialBG.png");
+	TextureManager::GetInstance()->Load("scoreBG", "images\\background\\scoreBG.png");
+
+	// back
+	TextureManager::GetInstance()->Load("back", "images\\background\\back.png");
+	TextureManager::GetInstance()->Load("backCLick", "images\\background\\backClick.png");
+
+
 	// tạo player
 	player = new Player("Idle", 500, 200, 27, 80);
 
 	// khởi tạo enemy
 	enemies = new Enemies();
+
+	
 	return Running;
 }
 void Engine::Render()
@@ -156,7 +180,6 @@ void Engine::Render()
 		TextureManager::GetInstance()->Draw("health_10", 0, 0, 300, 40);
 		break;
 	}
-
 	SDL_RenderPresent(Renderer);
 }
 void Engine::Update()
@@ -178,7 +201,6 @@ void Engine::Update()
 			enemies->DeleteEnemy(_CheckEnmies[1]);
 		}
 	}
-
 	// nếu có đạn enemies bắn trúng player thì trừ máu player
 	vector<Enemy*> _enemies = enemies->GetEnemies();
 	unsigned int n = _enemies.size();
@@ -194,7 +216,6 @@ void Engine::Update()
 			enemies->DeleteBulletEnemy(enemies->GetEnemy(i), _CheckPlayer); // xóa đạn của enemy
 		}
 	}
-
 	enemies->Update(player, player->GetAlive());
 }
 
@@ -233,12 +254,6 @@ void Engine::Reset() // reset màng mới
 	{
 		MapID++;
 
-		//
-		// 
-		// giao diện chuyển map
-		// 
-		// 
-		
 		// chuyen map
 		if (MapID == 1) // load map 1
 		{
@@ -262,12 +277,29 @@ void Engine::Reset() // reset màng mới
 	}
 }
 
-void Engine::Input()
+void Engine::Menu()
+{
+	int check = Input();
+	while (check != 0)
+	{
+		if (check == 1)
+		{
+			Tutorial();
+		}
+		else if (check == 2)
+		{
+			Score();
+		}
+		check = Input();
+	}
+}
+
+int Engine::Input()
 {
 	// xóa kết xuất cũ
 	SDL_RenderClear(Renderer);
 
-	TextureManager::GetInstance()->Draw("bgMenu", 0, 0, 1280, 640);
+	TextureManager::GetInstance()->Draw("bgMenu", 0, -40, 1280, 640);
 
 	TextureManager::GetInstance()->Draw("play", 540, 100, 200, 64);
 	TextureManager::GetInstance()->Draw("tutorial", 540, 200, 200, 64);
@@ -275,8 +307,7 @@ void Engine::Input()
 	TextureManager::GetInstance()->Draw("quit", 540, 400, 200, 64);
 
 	SDL_Event event;
-	bool check = true;
-	while (check == true)
+	while (true)
 	{
 		SDL_Delay(10); // dừng lại cpu nghỉ ngơi
 		SDL_PollEvent(&event);
@@ -285,8 +316,7 @@ void Engine::Input()
 		{
 		case SDL_QUIT:
 			Running = false;
-			check = false;
-			break;
+			return 0;
 		case SDL_MOUSEBUTTONUP: // xóa hình chữ nhật được chọn khi thả nút chọn trái
 			if (event.button.button == SDL_BUTTON_LEFT)
 			{
@@ -295,37 +325,32 @@ void Engine::Input()
 					event.button.y >= 100 && event.button.y <= 164)
 				{
 					TextureManager::GetInstance()->Draw("play", 540, 100, 200, 64);
-					check = false;
+					return 0;
 				}
 				// tutorial
 				else if (event.button.x >= 540 && event.button.x <= 740 &&
 					event.button.y >= 200 && event.button.y <= 264)
 				{
 					TextureManager::GetInstance()->Draw("tutorial", 540, 200, 200, 64);
-
-
-					check = false;
+					return 1;
 				}
 				// score
 				else if (event.button.x >= 540 && event.button.x <= 740 &&
 					event.button.y >= 300 && event.button.y <= 364)
 				{
 					TextureManager::GetInstance()->Draw("score", 540, 300, 200, 64);
-
-
-
-					check = false;
+					return 2;
 				}
 				// quit
 				else if (event.button.x >= 540 && event.button.x <= 740 &&
 					event.button.y >= 400 && event.button.y <= 464)
 				{
 					TextureManager::GetInstance()->Draw("quit", 540, 400, 200, 64);
-					check = false;
+					return 0;
 				}
 			}
 			break;
-		case SDL_MOUSEBUTTONDOWN: // xác định hình chữ nhật được chọn
+		case SDL_MOUSEBUTTONDOWN:
 			if (event.button.button == SDL_BUTTON_LEFT)
 			{
 				// pkay
@@ -355,6 +380,12 @@ void Engine::Input()
 				}
 			}
 			break;
+		case SDL_KEYDOWN:
+			if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+			{
+				exit(0);
+			}
+			break;
 		}
 		SDL_RenderPresent(Renderer);
 	}
@@ -375,8 +406,6 @@ void Engine::Output()
 
 	// lấy text
 	string text = "Welcome you to Stdio.vn";
-
-
 
 	SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), fg);
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(Renderer, surface);
@@ -400,4 +429,179 @@ void Engine::Output()
 	//draw to screen
 	SDL_RenderPresent(Renderer);
 
+}
+
+void Engine::Tutorial()
+{
+	// xóa kết xuất cũ
+	SDL_RenderClear(Renderer);
+	TextureManager::GetInstance()->Draw("tutorialBG", 0, 0, 1280, 640);
+	TextureManager::GetInstance()->Draw("back", 10, 10, 70, 70);
+
+	SDL_Event event;
+	bool check = true;
+	while (check == true)
+	{
+		SDL_Delay(10); // dừng lại cpu nghỉ ngơi
+		SDL_PollEvent(&event);
+
+		switch (event.type)
+		{
+		case SDL_QUIT:
+			exit(0);
+		case SDL_MOUSEBUTTONUP:
+			if (event.button.button == SDL_BUTTON_LEFT)
+			{
+				// back
+				if (event.button.x >= 10 && event.button.x <= 80 &&
+					event.button.y >= 10 && event.button.y <= 80)
+				{
+					TextureManager::GetInstance()->Draw("back", 10, 10, 70, 70);
+					check = false;
+				}
+			}
+			break;
+		case SDL_MOUSEBUTTONDOWN:
+			if (event.button.button == SDL_BUTTON_LEFT)
+			{
+				// back
+				if (event.button.x >= 10 && event.button.x <= 80 &&
+					event.button.y >= 10 && event.button.y <= 80)
+				{
+					TextureManager::GetInstance()->Draw("backCLick", 10, 10, 70, 70);
+				}
+			}
+			break;
+		case SDL_KEYDOWN:
+			if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+			{
+				exit(0);
+			}
+			break;
+		}
+		SDL_RenderPresent(Renderer);
+	}
+}
+
+void Engine::Score()
+{
+	// xóa kết xuất cũ
+	SDL_RenderClear(Renderer);
+	TextureManager::GetInstance()->Draw("scoreBG", 0, 0, 1280, 640);
+	TextureManager::GetInstance()->Draw("back", 10, 10, 70, 70);
+
+	SDL_Event event;
+	bool check = true;
+	while (check == true)
+	{
+		SDL_Delay(10); // dừng lại cpu nghỉ ngơi
+		SDL_PollEvent(&event);
+
+		switch (event.type)
+		{
+		case SDL_QUIT:
+			exit(0);
+		case SDL_MOUSEBUTTONUP:
+			if (event.button.button == SDL_BUTTON_LEFT)
+			{
+				// back
+				if (event.button.x >= 10 && event.button.x <= 80 &&
+					event.button.y >= 10 && event.button.y <= 80)
+				{
+					TextureManager::GetInstance()->Draw("back", 10, 10, 70, 70);
+					check = false;
+				}
+			}
+			break;
+		case SDL_MOUSEBUTTONDOWN: // xác định hình chữ nhật được chọn
+			if (event.button.button == SDL_BUTTON_LEFT)
+			{
+				// pkay
+				if (event.button.x >= 10 && event.button.x <= 80 &&
+					event.button.y >= 10 && event.button.y <= 80)
+				{
+					TextureManager::GetInstance()->Draw("backCLick", 10, 10, 70, 70);
+				}
+			}
+			break;
+		case SDL_KEYDOWN:
+			if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+			{
+				exit(0);
+			}
+			break;
+		default:
+			// in điểm số
+			ifstream ifs("data\\scores.txt");
+			if (!ifs.is_open()) {
+				cerr << "Could not open the file - '"
+					<< "data\\scores.txt" << "'" << endl;
+			}
+			string str = "";
+
+			// render text
+			SDL_Color fg = { 243, 156, 18 };
+			TTF_Font* font = TTF_OpenFont("font\\m5x7.ttf", 30);
+			if (font == nullptr)
+			{
+				cout << "thanh cong";
+				SDL_Log("Fail to initialize Window: %s", SDL_GetError());
+			}
+
+			SDL_Surface* surface = nullptr;
+			SDL_Texture* texture = nullptr;
+			
+			surface = TTF_RenderText_Solid(font, "SCORE", fg);
+			texture = SDL_CreateTextureFromSurface(Renderer, surface);
+
+			SDL_Rect srcRest;
+			SDL_Rect desRect;
+			TTF_SizeText(font, "SCORE", &srcRest.w, &srcRest.h);
+
+			srcRest.x = 0;
+			srcRest.y = 0;
+
+			desRect.x = 590;
+			desRect.y = 200;
+
+			desRect.w = srcRest.w;
+			desRect.h = srcRest.h;
+
+			//Copy a portion of the texture to the current rendering target.
+			SDL_RenderCopy(Renderer, texture, &srcRest, &desRect);
+			//draw to screen
+			SDL_RenderPresent(Renderer);
+
+			int i = 40;
+
+			while (getline(ifs, str))
+			{
+
+				surface = TTF_RenderText_Solid(font, str.c_str(), fg);
+				texture = SDL_CreateTextureFromSurface(Renderer, surface);
+
+				SDL_Rect srcRest;
+				SDL_Rect desRect;
+				TTF_SizeText(font, str.c_str(), &srcRest.w, &srcRest.h);
+
+				srcRest.x = 0;
+				srcRest.y = 0;
+
+				desRect.x = 540;
+				desRect.y = 200 + i;
+				i += 20;
+
+				desRect.w = srcRest.w;
+				desRect.h = srcRest.h;
+
+				//Copy a portion of the texture to the current rendering target.
+				SDL_RenderCopy(Renderer, texture, &srcRest, &desRect);
+				//draw to screen
+				SDL_RenderPresent(Renderer);
+			}
+			SDL_FreeSurface(surface);
+			break;
+		}
+		SDL_RenderPresent(Renderer);
+	}
 }

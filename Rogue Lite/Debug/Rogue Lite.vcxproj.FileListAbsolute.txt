@@ -4,3 +4,5 @@ C:\Users\tinho\Desktop\Rogue Lite - Copy\Debug\Rogue Lite.exe
 C:\Users\tinho\Desktop\Rogue Lite P2\Debug\Rogue Lite.exe
 C:\Users\tinho\Desktop\Rogue Lite P2 - Copy\Debug\Rogue Lite.exe
 C:\Users\tinho\Desktop\git\Rogue Lite P2\Debug\Rogue Lite.exe
+C:\Users\tinho\Desktop\git\Rogue Lite\Debug\Rogue Lite.exe
+C:\Users\tinho\Desktop\git - Copy\Rogue Lite\Debug\Rogue Lite.exe

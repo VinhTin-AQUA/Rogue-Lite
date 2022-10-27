@@ -2,6 +2,7 @@
 
 #include <SDL.h>
 #include <iostream>
+#include <fstream>
 #include "GameMap.h"
 
 using namespace std;
@@ -19,6 +20,7 @@ private:
 	SDL_Renderer* Renderer; // kết xuất
 	GameMap* m_LevelMap; // chứa map
 	int MapID; // chỉ số map
+	
 
 public:
 	static Engine* GetInstance();
@@ -36,8 +38,15 @@ public:
 	inline SDL_Renderer* GetRenderer() { return Renderer; }
 	inline GameMap* GetMap() { return m_LevelMap; }
 
+	// menu
+	void Menu();
+
 	// input - output
-	void Input();
+	int Input();
 	void Output();
+
+	// tutorial
+	void Tutorial();
+	void Score();
 };
 

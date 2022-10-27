@@ -9,7 +9,7 @@ int main(int argc, char* argv[])
 	// từ phương thức tĩnh gọi bất kỳ tới phương thức nào trong class đó
 	Engine::GetInstance()->Init();
 
-	Engine::GetInstance()->Input();
+	Engine::GetInstance()->Menu();
 
 	while (Engine::GetInstance()->IsRunning())
 	{

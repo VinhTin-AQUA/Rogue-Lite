@@ -143,3 +143,4 @@ void Enemy_3::SetPosition() // set vị trí của enemy
 
 	m_Collider->Set(x + w/10, y + h/2, w - w/4 , h - h/2);
 }
+
