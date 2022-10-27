@@ -1,0 +1,30 @@
+﻿  Animation.cpp
+  Bullet.cpp
+  Character.cpp
+  Collider.cpp
+  CollisionHandler.cpp
+  Enemies.cpp
+  Enemy.cpp
+  Enemy_1.cpp
+  Enemy_2.cpp
+  Enemy_3.cpp
+  Engine.cpp
+  Explosion.cpp
+  GameMap.cpp
+  HitFire.cpp
+  Input.cpp
+  Main.cpp
+  MapParser.cpp
+  Player.cpp
+  Sound.cpp
+  TextureManager.cpp
+  Generating Code...
+  Compiling...
+  TileLayer.cpp
+  tinystr.cpp
+  tinyxml.cpp
+  tinyxmlerror.cpp
+  tinyxmlparser.cpp
+  Transform.cpp
+  Generating Code...
+  Rogue Lite.vcxproj -> C:\Users\tinho\Desktop\git\Rogue Lite P2\Debug\Rogue Lite.exe
