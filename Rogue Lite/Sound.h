@@ -6,6 +6,7 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 const int MAX_SND_CHANNELS = 8; // số lượng hiệu ứng âm thanh có thể phát cùng một lúc
+const int MAX_MUSICS = 8;
 
 using namespace std;
 
@@ -29,18 +30,24 @@ enum
 	SND_MAX,
 };
 
+// loại music
+enum
+{
+	ENTER_THE_GAME,
+	THE_END,
+	THROUGH_LEVEL
+};
+
 class Sound
 {
 private:
 	Mix_Chunk* sounds[MAX_SND_CHANNELS];
-	Mix_Music* music;
+	Mix_Music* musics[MAX_MUSICS];
 public:
 	Sound();
 	~Sound();
-	// tải âm nhạc
-	void loadMusic(char* filename); // chua dung den
 	// phát nhạc
-	void playMusic(int loop); // chua dung den
+	void playMusic(int musicName, int loop); // chua dung den
 	// phát âm thanh
 	void playSound(int channel, int id);
 };

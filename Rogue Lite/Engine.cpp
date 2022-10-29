@@ -129,6 +129,10 @@ bool Engine::Init() // hàm khởi tạo trò chơi, nếu khởi tạo thành c
 	TextureManager::GetInstance()->Load("exit", "images\\background\\exit.png");
 	TextureManager::GetInstance()->Load("exitClick", "images\\background\\exitClick.png");
 
+	// replay
+	TextureManager::GetInstance()->Load("rePlay", "images\\background\\RePlay.png");
+	TextureManager::GetInstance()->Load("rePlayClick", "images\\background\\RePlayClick.png");
+
 	// input name
 	TextureManager::GetInstance()->Load("inputName", "images\\background\\InputName.png");
 
@@ -289,24 +293,28 @@ void Engine::Reset() // reset màng mới
 			level++;
 			m_LevelMap = MapParser::GetInstance()->GetMap("MAP1");
 		}
+		sound.playMusic(THROUGH_LEVEL, 1);
 		enemies->Reset(level);
 		player->ResetHealth();
 	}
 }
 
+void Engine::ResetStage()
+{
+	// reset
+	level = 1;
+	score = 0;
+	name = "Name Player";
+	MapID = 1;
+	m_LevelMap = MapParser::GetInstance()->GetMap("MAP1");
+	player->SetPlayer("Idle", 500, 200, 27, 80, 10);
+	enemies->Reset(level);
+	Running = true;
+}
+
 void Engine::Menu()
 {
-	if (player->GetAlive() == false)
-	{
-		level = 1;
-		score = 0;
-		name = "Name Player";
-		MapID = 1;
-		m_LevelMap = MapParser::GetInstance()->GetMap("MAP1");
-		player->SetPlayer("Idle", 500, 200, 27, 80, 10);
-		enemies->Reset(level);
-	}
-
+	sound.playMusic(ENTER_THE_GAME, 1);
 	int check = Input();
 	while (check != 0)
 	{
@@ -320,9 +328,7 @@ void Engine::Menu()
 		}
 		check = Input();
 	}
-
 	// reset game stage
-	Running = true;
 }
 
 int Engine::Input()
@@ -423,13 +429,15 @@ int Engine::Input()
 	}
 }
 
-bool Engine::Output()  
+int Engine::Output()  
 {
+	sound.playMusic(THE_END, 1);
 	SDL_RenderClear(Renderer);
 	TextureManager::GetInstance()->Draw("scoreBG", 0, 0, 1280, 640);
 	TextureManager::GetInstance()->Draw("menu", 520, 400, 70, 53);
 	TextureManager::GetInstance()->Draw("exit", 620, 400, 70, 53);
-
+	TextureManager::GetInstance()->Draw("rePlay", 720, 400, 70, 53);	
+	
 	TTF_Font* font = TTF_OpenFont("font\\m5x7.ttf", 30);
 	if (font == nullptr)
 	{
@@ -440,13 +448,13 @@ bool Engine::Output()
 	SDL_Surface* surface = nullptr;
 	SDL_Texture* texture = nullptr;
 
-	surface = TTF_RenderText_Solid(font, "============ GAME OVER ============", fg);
+	surface = TTF_RenderText_Solid(font, "============ THE END ============", {42, 26, 250});
 	texture = SDL_CreateTextureFromSurface(Renderer, surface);
 	SDL_FreeSurface(surface);
 
 	SDL_Rect srcRest;
 	SDL_Rect desRect;
-	TTF_SizeText(font, "============ GAME OVER ============", &srcRest.w, &srcRest.h);
+	TTF_SizeText(font, "============ THE END ============", &srcRest.w, &srcRest.h);
 
 	srcRest.x = 0;
 	srcRest.y = 0;
@@ -524,7 +532,7 @@ bool Engine::Output()
 			<< "data\\scores.txt" << "'" << endl;
 		return EXIT_FAILURE;
 	}
-	name = name + "\n" + to_string(score) + '\n' + DateTime() + +"\n---------\n";
+	name = name + "\n" + "Score: " + to_string(score) + '\n' + "Time: " + DateTime() + +"\n--------------------\n";
 	string temp = "";
 	int i = 1;
 	while (getline(ifs, temp)) 
@@ -539,6 +547,9 @@ bool Engine::Output()
 	ofstream ofs("data\\scores.txt");
 	ofs << name;
 	ofs.close();
+
+	ResetStage(); // reset stage
+
 	// ============== run
 	SDL_Event event;
 	while(true)
@@ -558,8 +569,7 @@ bool Engine::Output()
 					event.button.y >= 400 && event.button.y <= 453)
 				{
 					TextureManager::GetInstance()->Draw("menu", 520, 400, 70, 53);
-						
-					return true;
+					return 1;
 				}
 				// exit
 				else if (event.button.x >= 600 && event.button.x <= 670 &&
@@ -567,6 +577,14 @@ bool Engine::Output()
 				{
 					TextureManager::GetInstance()->Draw("exit", 620, 400, 70, 53);
 					exit(0);
+				}
+				// replay
+				else if (event.button.x >= 720 && event.button.x <= 790 &&
+					event.button.y >= 400 && event.button.y <= 453)
+				{
+					TextureManager::GetInstance()->Draw("rePlay", 720, 400, 70, 53);
+					ResetStage();
+					return 2;
 				}
 			}
 			break;
@@ -584,6 +602,12 @@ bool Engine::Output()
 					event.button.y >= 400 && event.button.y <= 453)
 				{
 					TextureManager::GetInstance()->Draw("exitClick", 620, 400, 70, 53);
+				}
+				// replay
+				else if (event.button.x >= 720 && event.button.x <= 790 &&
+					event.button.y >= 400 && event.button.y <= 453)
+				{
+					TextureManager::GetInstance()->Draw("rePlayClick", 720, 400, 70, 53);
 				}
 			}
 			break;
@@ -711,6 +735,7 @@ void Engine::Score()
 
 			SDL_Surface* surface = TTF_RenderText_Solid(font, "============ SCORES ============", color1);
 			SDL_Texture* fontTexture = SDL_CreateTextureFromSurface(Renderer, surface);
+			SDL_FreeSurface(surface);
 			int texW = 0;
 			int texH = 0;
 			SDL_QueryTexture(fontTexture, NULL, NULL, &texW, &texH);
@@ -728,10 +753,12 @@ void Engine::Score()
 				SDL_QueryTexture(fontTexture, NULL, NULL, &texW, &texH);
 				SDL_Rect dstrect = { 520, 200 + i, texW, texH };
 				SDL_RenderCopy(Renderer, fontTexture, NULL, &dstrect);
+
 				SDL_DestroyTexture(fontTexture);
 				i += 20;
 				if (i == 360) break;
 			}
+			TTF_CloseFont(font);
 			ifs.close();
 			break;
 		}

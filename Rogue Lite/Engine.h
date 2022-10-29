@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include "GameMap.h"
+#include "Sound.h"
 
 using namespace std;
 
@@ -25,6 +26,8 @@ private:
 	int level;
 	int score;
 
+	Sound sound;
+
 public:
 	static Engine* GetInstance();
 
@@ -41,12 +44,15 @@ public:
 	inline SDL_Renderer* GetRenderer() { return Renderer; }
 	inline GameMap* GetMap() { return m_LevelMap; }
 
+	// reset stage
+	void ResetStage();
+
 	// menu
 	void Menu();
 
 	// input - output
 	int Input();
-	bool Output();
+	int Output();
 
 	// tutorial
 	void Tutorial();

@@ -6,12 +6,12 @@
 
 int main(int argc, char* argv[])
 {
-	bool check = true;
+	int t = 0;
 	// từ phương thức tĩnh gọi bất kỳ tới phương thức nào trong class đó
 	Engine::GetInstance()->Init();
 	do
 	{
-		Engine::GetInstance()->Menu();
+		if(t != 2) Engine::GetInstance()->Menu();
 		
 		while (Engine::GetInstance()->IsRunning())
 		{
@@ -20,8 +20,8 @@ int main(int argc, char* argv[])
 			Engine::GetInstance()->Render();
 			Engine::GetInstance()->Reset();
 		}
-		
-	} while (Engine::GetInstance()->Output());
+		t = Engine::GetInstance()->Output();
+	} while (t != 0);
 
 	Engine::GetInstance()->Clean();
 	return 0;
