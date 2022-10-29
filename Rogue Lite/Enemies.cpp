@@ -16,24 +16,23 @@ Enemies::Enemies() // khoi tao enemies
 	for (unsigned int i = 0; i < 3; i++)
 	{
 		Enemy_1* enemy;
-		enemy = new Enemy_1();
+		enemy = new Enemy_1(1);
 		_Enemies.push_back(enemy);
 	}
 
 	for (unsigned int i = 0; i < 3; i++)
 	{
 		Enemy_2* enemy;
-		enemy = new Enemy_2();
+		enemy = new Enemy_2(1);
 		_Enemies.push_back(enemy);
 	}
 
 	for (unsigned int i = 0; i < 3; i++)
 	{
 		Enemy_3* enemy;
-		enemy = new Enemy_3();
+		enemy = new Enemy_3(1);
 		_Enemies.push_back(enemy);
 	}
-	
 	sound = new Sound();
 }
 Enemies::~Enemies()
@@ -154,27 +153,28 @@ void Enemies::DrawExplosion() // vẽ vụ nổ lên màng hình
 	}
 }
 
-void Enemies::Reset()
+void Enemies::Reset(int level)
 {
+	if (_Enemies.size() > 0) _Enemies.clear();
 	// khởi tạo enemeies
 	for (unsigned int i = 0; i < 3; i++)
 	{
 		Enemy_1* enemy;
-		enemy = new Enemy_1();
+		enemy = new Enemy_1(level);
 		_Enemies.push_back(enemy);
 	}
 
 	for (unsigned int i = 0; i < 3; i++)
 	{
 		Enemy_2* enemy;
-		enemy = new Enemy_2();
+		enemy = new Enemy_2(level);
 		_Enemies.push_back(enemy);
 	}
 
 	for (unsigned int i = 0; i < 3; i++)
 	{
 		Enemy_3* enemy;
-		enemy = new Enemy_3();
+		enemy = new Enemy_3(level);
 		_Enemies.push_back(enemy);
 	}
 }

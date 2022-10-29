@@ -40,6 +40,7 @@ int Player::GetW() { return Width; }
 int Player::GetH() { return Height; }
 SDL_Rect Player::GetBox() { return m_Collider->Get(); }
 void Player::SetHealth() { Health--; }
+void Player::ResetHealth() { Health = 10; }
 int Player::GetHealth() { return Health; }
 float Player::GetX() { return Position.GetX(); } // lấy tọa độ x
 float Player::GetY() { return Position.GetY(); } // lấy tọa độ y
@@ -66,11 +67,13 @@ Player::~Player()
 }
 
 // thiết lập lại thuộc tính của player
-void Player::SetPlayer(string id, float x, float y, int frameCount, int speed, SDL_RendererFlip flip)
+void Player::SetPlayer(string id, float x, float y, int frameCount, int speed, int health, SDL_RendererFlip flip)
 {
 	TextureID = id; // lấy kết cấu
 	Position.SetX(x); Position.SetY(y); // cài đặt lại vị trí player
 	_Animation->SetProps(TextureID, 0, frameCount, speed, flip);
+	Health = health;
+	Alive = true;
 }
 
 // vẽ player
@@ -171,6 +174,10 @@ void Player::Update(vector<Enemy*> Enemies)
 							{
 								_Animation->SetFlip(SDL_FLIP_HORIZONTAL);
 							}
+							else
+							{
+								_Animation->SetFlip(SDL_FLIP_NONE);
+							}
 						}
 					}
 					Bullet* bullet = new Bullet("Bullet", Position.GetX(), Position.GetY(), Width, Height, 4, _dxB, _dyB);
@@ -184,6 +191,7 @@ void Player::Update(vector<Enemy*> Enemies)
 					reload = FPS_BULLET;
 				}
 			}
+			_Animation->SetProps("Attack", 0, 4, Speed, _Animation->GetFlip());
 		}
 		doBullets();
 

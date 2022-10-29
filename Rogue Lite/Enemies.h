@@ -40,7 +40,7 @@ public:
 	void DrawExplosion();
 
 	// reset enemies
-	void Reset();
+	void Reset(int level);
 };
 
 #endif

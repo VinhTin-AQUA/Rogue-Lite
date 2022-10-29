@@ -6,9 +6,9 @@
 #include "Enemies.h"
 #include "HitFire.h"
 #include "Sound.h"
-
+#include <cstdlib>
 #include <SDL_ttf.h>
-
+#include <ctime>
 
 Engine* Engine::Instance = nullptr;
 Player* player;
@@ -50,7 +50,6 @@ bool Engine::Init() // hàm khởi tạo trò chơi, nếu khởi tạo thành c
 	}
 	
 	TTF_Init();
-
 	MapID = 1; // chỉ số map ban đầu
 
 	// lấy map
@@ -59,7 +58,8 @@ bool Engine::Init() // hàm khởi tạo trò chơi, nếu khởi tạo thành c
 	TextureManager::GetInstance()->Load("bg", "images\\background.png"); // tải hình ảnh back ground
 
 	// player
-	TextureManager::GetInstance()->Load("Idle", "images\\player\\Player.png"); // tải hoạt ảnh đưng im của player
+	TextureManager::GetInstance()->Load("Idle", "images\\player\\Idle.png"); // tải hoạt ảnh đưng im của player
+	TextureManager::GetInstance()->Load("Attack", "images\\player\\Attack.png");
 	TextureManager::GetInstance()->Load("Bullet", "images\\player\\Bullet.png"); // tải ảnh đạn player
 
 	// enemy 1
@@ -121,14 +121,30 @@ bool Engine::Init() // hàm khởi tạo trò chơi, nếu khởi tạo thành c
 	TextureManager::GetInstance()->Load("back", "images\\background\\back.png");
 	TextureManager::GetInstance()->Load("backCLick", "images\\background\\backClick.png");
 
+	// menu
+	TextureManager::GetInstance()->Load("menu", "images\\background\\menu.png");
+	TextureManager::GetInstance()->Load("menuClick", "images\\background\\menuClick.png");
+
+	// exit
+	TextureManager::GetInstance()->Load("exit", "images\\background\\exit.png");
+	TextureManager::GetInstance()->Load("exitClick", "images\\background\\exitClick.png");
+
+	// input name
+	TextureManager::GetInstance()->Load("inputName", "images\\background\\InputName.png");
+
+	// enter
+	TextureManager::GetInstance()->Load("enter", "images\\background\\ENTER.png");
+	TextureManager::GetInstance()->Load("enterClick", "images\\background\\enterClick.png");
 
 	// tạo player
-	player = new Player("Idle", 500, 200, 27, 80);
+	player = new Player("Idle", 500, 200, 29, 80);
 
 	// khởi tạo enemy
 	enemies = new Enemies();
 
-	
+	name = "Name Player";
+	level = 1;
+	score = 0;
 	return Running;
 }
 void Engine::Render()
@@ -199,6 +215,7 @@ void Engine::Update()
 		{
 			// xóa enemies khỏi danh sách 
 			enemies->DeleteEnemy(_CheckEnmies[1]);
+			score++; // tăng điểm số
 		}
 	}
 	// nếu có đạn enemies bắn trúng player thì trừ máu player
@@ -247,8 +264,7 @@ void Engine::Reset() // reset màng mới
 {
 	if (player->GetAlive() == false) // player ngủm
 	{
-		// trả về giao diện kết thúc game, replay, exit
-		
+		Running = false;
 	}
 	else if(enemies->GetSize() == 0) // enemies ngủm hết
 	{
@@ -270,15 +286,27 @@ void Engine::Reset() // reset màng mới
 		else if (MapID > 3) // tro ve map 1
 		{
 			MapID = 1;
+			level++;
 			m_LevelMap = MapParser::GetInstance()->GetMap("MAP1");
 		}
-
-		enemies->Reset();
+		enemies->Reset(level);
+		player->ResetHealth();
 	}
 }
 
 void Engine::Menu()
 {
+	if (player->GetAlive() == false)
+	{
+		level = 1;
+		score = 0;
+		name = "Name Player";
+		MapID = 1;
+		m_LevelMap = MapParser::GetInstance()->GetMap("MAP1");
+		player->SetPlayer("Idle", 500, 200, 27, 80, 10);
+		enemies->Reset(level);
+	}
+
 	int check = Input();
 	while (check != 0)
 	{
@@ -292,6 +320,9 @@ void Engine::Menu()
 		}
 		check = Input();
 	}
+
+	// reset game stage
+	Running = true;
 }
 
 int Engine::Input()
@@ -315,9 +346,10 @@ int Engine::Input()
 		switch (event.type)
 		{
 		case SDL_QUIT:
+			exit(0);
 			Running = false;
 			return 0;
-		case SDL_MOUSEBUTTONUP: // xóa hình chữ nhật được chọn khi thả nút chọn trái
+		case SDL_MOUSEBUTTONUP:
 			if (event.button.button == SDL_BUTTON_LEFT)
 			{
 				// play
@@ -325,7 +357,7 @@ int Engine::Input()
 					event.button.y >= 100 && event.button.y <= 164)
 				{
 					TextureManager::GetInstance()->Draw("play", 540, 100, 200, 64);
-					return 0;
+					return InputName();
 				}
 				// tutorial
 				else if (event.button.x >= 540 && event.button.x <= 740 &&
@@ -346,14 +378,14 @@ int Engine::Input()
 					event.button.y >= 400 && event.button.y <= 464)
 				{
 					TextureManager::GetInstance()->Draw("quit", 540, 400, 200, 64);
-					return 0;
+					exit(0);
 				}
 			}
 			break;
 		case SDL_MOUSEBUTTONDOWN:
 			if (event.button.button == SDL_BUTTON_LEFT)
 			{
-				// pkay
+				// play
 				if (event.button.x >= 540 && event.button.x <= 740 &&
 					event.button.y >= 100 && event.button.y <= 164)
 				{
@@ -376,7 +408,6 @@ int Engine::Input()
 					event.button.y >= 400 && event.button.y <= 464)
 				{
 					TextureManager::GetInstance()->Draw("quitClick", 540, 400, 200, 64);
-					Running = false;
 				}
 			}
 			break;
@@ -384,51 +415,186 @@ int Engine::Input()
 			if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
 			{
 				exit(0);
+				return 0;
 			}
 			break;
 		}
 		SDL_RenderPresent(Renderer);
 	}
 }
-void Engine::Output()
+
+bool Engine::Output()  
 {
 	SDL_RenderClear(Renderer);
-	TextureManager::GetInstance()->Draw("bgMenu", 0, 0, 1280, 640);
+	TextureManager::GetInstance()->Draw("scoreBG", 0, 0, 1280, 640);
+	TextureManager::GetInstance()->Draw("menu", 520, 400, 70, 53);
+	TextureManager::GetInstance()->Draw("exit", 620, 400, 70, 53);
 
 	TTF_Font* font = TTF_OpenFont("font\\m5x7.ttf", 30);
 	if (font == nullptr)
 	{
-		cout << "thanh cong";
 		SDL_Log("Fail to initialize Window: %s", SDL_GetError());
 	}
-	SDL_Color fg = { 243, 156, 18 };
+	SDL_Color fg = { 118, 247, 83 };
 
+	SDL_Surface* surface = nullptr;
+	SDL_Texture* texture = nullptr;
 
-	// lấy text
-	string text = "Welcome you to Stdio.vn";
-
-	SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), fg);
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(Renderer, surface);
+	surface = TTF_RenderText_Solid(font, "============ GAME OVER ============", fg);
+	texture = SDL_CreateTextureFromSurface(Renderer, surface);
 	SDL_FreeSurface(surface);
 
 	SDL_Rect srcRest;
 	SDL_Rect desRect;
-	TTF_SizeText(font, text.c_str(), &srcRest.w, &srcRest.h);
+	TTF_SizeText(font, "============ GAME OVER ============", &srcRest.w, &srcRest.h);
 
 	srcRest.x = 0;
 	srcRest.y = 0;
-
-	desRect.x = 540;
+	desRect.x = 500;
 	desRect.y = 200;
+	desRect.w = srcRest.w;
+	desRect.h = srcRest.h;
+
+	SDL_RenderCopy(Renderer, texture, &srcRest, &desRect);
+	SDL_RenderPresent(Renderer);
+
+	// =======================  in thong tin ======================
+	// name
+	string _name = "NAME: " + name;
+
+	surface = TTF_RenderText_Solid(font, _name.c_str(), fg);
+	texture = SDL_CreateTextureFromSurface(Renderer, surface);
+	TTF_SizeText(font, _name.c_str(), &srcRest.w, &srcRest.h);
+
+	srcRest.x = 0;
+	srcRest.y = 0;
+	desRect.x = 540;
+	desRect.y = 240;
 
 	desRect.w = srcRest.w;
 	desRect.h = srcRest.h;
 
-	//Copy a portion of the texture to the current rendering target.
 	SDL_RenderCopy(Renderer, texture, &srcRest, &desRect);
-	//draw to screen
 	SDL_RenderPresent(Renderer);
 
+	// score
+	string _score = "SCORE: " + to_string(score);
+	surface = TTF_RenderText_Solid(font, _score.c_str(), fg);
+	texture = SDL_CreateTextureFromSurface(Renderer, surface);
+	TTF_SizeText(font, _score.c_str(), &srcRest.w, &srcRest.h);
+
+	srcRest.x = 0;
+	srcRest.y = 0;
+	desRect.x = 540;
+	desRect.y = 280;
+
+	desRect.w = srcRest.w;
+	desRect.h = srcRest.h;
+
+	SDL_FreeSurface(surface);
+
+	SDL_RenderCopy(Renderer, texture, &srcRest, &desRect);
+	SDL_RenderPresent(Renderer);
+
+	// time
+	string _time = "TIME: " + DateTime();
+	surface = TTF_RenderText_Solid(font, _time.c_str(), fg);
+	texture = SDL_CreateTextureFromSurface(Renderer, surface);
+	TTF_SizeText(font, _time.c_str(), &srcRest.w, &srcRest.h);
+
+	srcRest.x = 0;
+	srcRest.y = 0;
+	desRect.x = 540;
+	desRect.y = 320;
+
+	desRect.w = srcRest.w;
+	desRect.h = srcRest.h;
+
+	SDL_FreeSurface(surface);
+	SDL_RenderCopy(Renderer, texture, &srcRest, &desRect);
+	SDL_RenderPresent(Renderer);
+
+	SDL_DestroyTexture(texture);
+
+	// ==============================================
+	// luu du lieu cu tam thoi
+	ifstream ifs("data\\scores.txt");
+	if (!ifs.is_open()) {
+		cerr << "Could not open the file - '"
+			<< "data\\scores.txt" << "'" << endl;
+		return EXIT_FAILURE;
+	}
+	name = name + "\n" + to_string(score) + '\n' + DateTime() + +"\n---------\n";
+	string temp = "";
+	int i = 1;
+	while (getline(ifs, temp)) 
+	{
+		name += temp + '\n';
+		i++;
+		if (i == 16) break;
+	}
+	ifs.close();
+
+	// luu du lieu moi
+	ofstream ofs("data\\scores.txt");
+	ofs << name;
+	ofs.close();
+	// ============== run
+	SDL_Event event;
+	while(true)
+	{
+		SDL_PollEvent(&event);
+
+		switch (event.type)
+		{
+		case SDL_QUIT:
+			exit(0);
+			break;
+		case SDL_MOUSEBUTTONUP:
+			if (event.button.button == SDL_BUTTON_LEFT)
+			{
+				// menu
+				if (event.button.x >= 500 && event.button.x <= 570 &&
+					event.button.y >= 400 && event.button.y <= 453)
+				{
+					TextureManager::GetInstance()->Draw("menu", 520, 400, 70, 53);
+						
+					return true;
+				}
+				// exit
+				else if (event.button.x >= 600 && event.button.x <= 670 &&
+					event.button.y >= 400 && event.button.y <= 453)
+				{
+					TextureManager::GetInstance()->Draw("exit", 620, 400, 70, 53);
+					exit(0);
+				}
+			}
+			break;
+		case SDL_MOUSEBUTTONDOWN:
+			if (event.button.button == SDL_BUTTON_LEFT)
+			{
+				// menu
+				if (event.button.x >= 500 && event.button.x <= 570 &&
+					event.button.y >= 400 && event.button.y <= 453)
+				{
+					TextureManager::GetInstance()->Draw("menuClick", 520, 400, 70, 53);
+				}
+				// exit
+				else if (event.button.x >= 600 && event.button.x <= 670 &&
+					event.button.y >= 400 && event.button.y <= 453)
+				{
+					TextureManager::GetInstance()->Draw("exitClick", 620, 400, 70, 53);
+				}
+			}
+			break;
+		case SDL_KEYDOWN: // ESC
+			if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+			{
+				exit(0);
+			}
+		}
+		SDL_RenderPresent(Renderer);
+	}
 }
 
 void Engine::Tutorial()
@@ -513,10 +679,10 @@ void Engine::Score()
 				}
 			}
 			break;
-		case SDL_MOUSEBUTTONDOWN: // xác định hình chữ nhật được chọn
+		case SDL_MOUSEBUTTONDOWN: 
 			if (event.button.button == SDL_BUTTON_LEFT)
 			{
-				// pkay
+				// back
 				if (event.button.x >= 10 && event.button.x <= 80 &&
 					event.button.y >= 10 && event.button.y <= 80)
 				{
@@ -539,69 +705,179 @@ void Engine::Score()
 			}
 			string str = "";
 
-			// render text
-			SDL_Color fg = { 243, 156, 18 };
 			TTF_Font* font = TTF_OpenFont("font\\m5x7.ttf", 30);
-			if (font == nullptr)
-			{
-				cout << "thanh cong";
-				SDL_Log("Fail to initialize Window: %s", SDL_GetError());
-			}
+			SDL_Color color1 = { 134, 89, 235 };
+			SDL_Color color = { 92, 238, 235 };
 
-			SDL_Surface* surface = nullptr;
-			SDL_Texture* texture = nullptr;
-			
-			surface = TTF_RenderText_Solid(font, "SCORE", fg);
-			texture = SDL_CreateTextureFromSurface(Renderer, surface);
-
-			SDL_Rect srcRest;
-			SDL_Rect desRect;
-			TTF_SizeText(font, "SCORE", &srcRest.w, &srcRest.h);
-
-			srcRest.x = 0;
-			srcRest.y = 0;
-
-			desRect.x = 590;
-			desRect.y = 200;
-
-			desRect.w = srcRest.w;
-			desRect.h = srcRest.h;
-
-			//Copy a portion of the texture to the current rendering target.
-			SDL_RenderCopy(Renderer, texture, &srcRest, &desRect);
-			//draw to screen
-			SDL_RenderPresent(Renderer);
+			SDL_Surface* surface = TTF_RenderText_Solid(font, "============ SCORES ============", color1);
+			SDL_Texture* fontTexture = SDL_CreateTextureFromSurface(Renderer, surface);
+			int texW = 0;
+			int texH = 0;
+			SDL_QueryTexture(fontTexture, NULL, NULL, &texW, &texH);
+			SDL_Rect dstrect = { 480, 200, texW, texH };
+			SDL_RenderCopy(Renderer, fontTexture, NULL, &dstrect);
 
 			int i = 40;
-
-			while (getline(ifs, str))
-			{
-
-				surface = TTF_RenderText_Solid(font, str.c_str(), fg);
-				texture = SDL_CreateTextureFromSurface(Renderer, surface);
-
-				SDL_Rect srcRest;
-				SDL_Rect desRect;
-				TTF_SizeText(font, str.c_str(), &srcRest.w, &srcRest.h);
-
-				srcRest.x = 0;
-				srcRest.y = 0;
-
-				desRect.x = 540;
-				desRect.y = 200 + i;
+			while (getline(ifs, str)) {
+				
+				surface = TTF_RenderText_Solid(font, str.c_str(), color);
+				fontTexture = SDL_CreateTextureFromSurface(Renderer, surface);
+				SDL_FreeSurface(surface);
+				int texW = 0;
+				int texH = 0;
+				SDL_QueryTexture(fontTexture, NULL, NULL, &texW, &texH);
+				SDL_Rect dstrect = { 520, 200 + i, texW, texH };
+				SDL_RenderCopy(Renderer, fontTexture, NULL, &dstrect);
+				SDL_DestroyTexture(fontTexture);
 				i += 20;
-
-				desRect.w = srcRest.w;
-				desRect.h = srcRest.h;
-
-				//Copy a portion of the texture to the current rendering target.
-				SDL_RenderCopy(Renderer, texture, &srcRest, &desRect);
-				//draw to screen
-				SDL_RenderPresent(Renderer);
+				if (i == 360) break;
 			}
-			SDL_FreeSurface(surface);
+			ifs.close();
 			break;
 		}
 		SDL_RenderPresent(Renderer);
 	}
+}
+
+int Engine::InputName()
+{
+	SDL_RenderClear(Renderer);
+	
+	TTF_Font* font2 = TTF_OpenFont("font\\m5x7.ttf", 30);
+	SDL_Color color{ 238,0,0,255 };
+
+	SDL_Surface* temp = TTF_RenderText_Solid(font2, "CLICK HERE", color);
+	SDL_Texture* textImage = SDL_CreateTextureFromSurface(Renderer, temp);
+
+	SDL_Rect pos{ 540, 200, temp->w, temp->h };
+	SDL_FreeSurface(temp);
+	temp = nullptr;
+
+	bool isRunning = true;
+	SDL_Event ev;
+
+	SDL_StartTextInput();
+	
+	int i = 10;
+	while (isRunning)
+	{
+		SDL_Delay(10); // dừng lại cpu nghỉ ngơi
+		SDL_PollEvent(&ev);
+		
+		switch (ev.type)
+		{
+		case SDL_QUIT:
+			exit(0);
+			break;
+		case SDL_KEYDOWN:
+		case SDL_TEXTINPUT:
+			if (ev.key.keysym.scancode == SDL_SCANCODE_BACKSPACE && name.length() > 0)
+			{
+				name = name.substr(0, name.length() - 1);
+			}
+			else if (ev.type == SDL_TEXTINPUT)
+			{
+				if (name.compare("Name Player") == 0) name = "TT: ";
+				if (name.length() <= 15)
+				{
+					name += ev.text.text;
+				}
+			}
+			else if (ev.key.keysym.scancode == SDL_SCANCODE_RETURN)
+			{
+				SDL_StopTextInput();
+				SDL_DestroyTexture(textImage);
+				return 0;
+			}
+			if (textImage)
+			{
+				SDL_DestroyTexture(textImage);
+				textImage = nullptr;
+			}
+			temp = TTF_RenderText_Solid(font2, name.c_str(), color);
+			if (temp)
+			{
+				textImage = SDL_CreateTextureFromSurface(Renderer, temp);
+				pos.w = temp->w;
+				pos.h = temp->h;
+				SDL_FreeSurface(temp);
+				temp = nullptr;
+			}
+			break;
+		case SDL_MOUSEBUTTONUP:
+			if (ev.button.button == SDL_BUTTON_LEFT)
+			{
+				// back
+				if (ev.button.x >= 10 && ev.button.x <= 80 &&
+					ev.button.y >= 10 && ev.button.y <= 80)
+				{
+					TextureManager::GetInstance()->Draw("back", 10, 10, 70, 70);
+					SDL_RenderPresent(Renderer);
+
+					SDL_StopTextInput();
+					SDL_DestroyTexture(textImage);
+					name = "Name Player";
+					return -1;
+				}
+				// enter
+				else if (ev.button.x >= 565 && ev.button.x <= 715 &&
+					ev.button.y >= 270 && ev.button.y <= 320)
+				{
+					TextureManager::GetInstance()->Draw("enterClick", 565, 270, 150, 60);
+					SDL_RenderPresent(Renderer);
+
+					SDL_StopTextInput();
+					SDL_DestroyTexture(textImage);
+					return 0;
+				}
+			}
+			break;
+		case SDL_MOUSEBUTTONDOWN:
+			if (ev.button.button == SDL_BUTTON_LEFT)
+			{
+				// back
+				if (ev.button.x >= 10 && ev.button.x <= 80 &&
+					ev.button.y >= 10 && ev.button.y <= 80)
+				{
+					TextureManager::GetInstance()->Draw("backCLick", 10, 10, 70, 70);
+					SDL_RenderPresent(Renderer);
+				}
+				else if (ev.button.x >= 565 && ev.button.x <= 715 &&
+					ev.button.y >= 270 && ev.button.y <= 320)
+				{
+					TextureManager::GetInstance()->Draw("enterClick", 565, 270, 150, 60);
+					SDL_RenderPresent(Renderer);
+				}
+			}
+			break;
+		}
+		SDL_RenderClear(Renderer);
+		TextureManager::GetInstance()->Draw("inputName", 0, 0, 1280, 640);
+		TextureManager::GetInstance()->Draw("enter", 565, 270, 150, 60);
+		TextureManager::GetInstance()->Draw("back", 10, 10, 70, 70);
+
+		SDL_RenderCopy(Renderer, textImage, nullptr, &pos);
+		SDL_RenderPresent(Renderer);
+	}
+	return -1;
+}
+
+string Engine::DateTime()
+{
+	struct tm newtime;
+	time_t now = time(0);
+	localtime_s(&newtime, &now);
+
+	
+	int Day = newtime.tm_mday;
+	int Month = 1 + newtime.tm_mon;
+	int Year = 1900 + newtime.tm_year;
+
+	int sec = newtime.tm_sec;
+	int min = newtime.tm_min;
+	int hour = newtime.tm_hour;
+
+	string time = to_string(Day) + '/' + to_string(Month) + '/' + to_string(Year) + " - " +
+		to_string(hour) + ':' + to_string(min) + ':' + to_string(sec);
+	return time;
 }

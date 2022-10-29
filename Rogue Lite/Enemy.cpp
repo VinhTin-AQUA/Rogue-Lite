@@ -7,13 +7,30 @@ Enemy::Enemy()
 	ExplosionID = ""; // tên chuỗi hoạt ảnh vụ nổ
 }
 
-int Enemy::GetW() { return Width; }
-int Enemy::GetH() { return Height; }
+
 SDL_Rect Enemy::GetBox() { return m_Collider->Get(); }
 void Enemy::SetHealth() { Health--; }
 int Enemy::GetHealth() { return Health; }
-float Enemy::GetX() { return Position.GetX(); }
-float Enemy::GetY() { return Position.GetY(); }
+int Enemy::GetW() 
+{ 
+	SDL_Rect box = GetBox();
+	return box.w;
+}
+int Enemy::GetH() 
+{ 
+	SDL_Rect box = GetBox();
+	return box.h;
+}
+float Enemy::GetX()
+{
+	SDL_Rect box = GetBox();
+	return (float)box.x;
+}
+float Enemy::GetY() 
+{ 
+	SDL_Rect box = GetBox();
+	return (float)box.y;
+}
 void Enemy::SetBulletID(string _BulletID) { BulletID = _BulletID; };
 string Enemy::GetBulletID() { return BulletID; };
 Collider* Enemy::GetCollider() { return m_Collider; }

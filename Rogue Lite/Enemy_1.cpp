@@ -3,7 +3,7 @@
 #include "CollisionHandler.h"
 #include "cmath"
 
-Enemy_1::Enemy_1(SDL_RendererFlip flip)
+Enemy_1::Enemy_1(int level, SDL_RendererFlip flip)
 {
 	float d[] = { -3,3 }; // mảng định hướng di chuyển cho enemy
 
@@ -16,7 +16,6 @@ Enemy_1::Enemy_1(SDL_RendererFlip flip)
 	FrameCount = 14;
 	Width = Width / FrameCount;
 	
-
 	// cài đặt hoạt ảnh
 	_Animation = new Animation();
 	_Animation->SetProps(TextureID, 0, FrameCount, 80);
@@ -52,10 +51,9 @@ Enemy_1::Enemy_1(SDL_RendererFlip flip)
 		dy = 0;
 	}
 
-	reload = rand() % 500; // tốc độ ra đạn của eneemy
-	Health = 10; // health ban đầu của enemy
+	reload = rand() % (500 - level*30) ; // tốc độ ra đạn của eneemy
+	Health = level*5 +10; // health ban đầu của enemy
 	ExplosionID = "Explosion_1"; // chuỗi hoạt ảnh vụ nổ
-
 }
 
 void Enemy_1::DecReload() { reload--; }

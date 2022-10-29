@@ -12,7 +12,7 @@ class Enemy_1 : public Enemy
 private:
 	
 public:
-	Enemy_1(SDL_RendererFlip flip = SDL_FLIP_NONE); // khởi tạo enemy hoạt động trên màng hình
+	Enemy_1(int level, SDL_RendererFlip flip = SDL_FLIP_NONE); // khởi tạo enemy hoạt động trên màng hình
 
 	void DecReload();
 	int GetReload();

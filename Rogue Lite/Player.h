@@ -32,7 +32,8 @@ public:
 	virtual int GetH(); 
 	virtual SDL_Rect GetBox();
 	virtual void SetHealth();
-	virtual int GetHealth(); 
+	virtual int GetHealth();
+	void ResetHealth();
 	virtual void SetBulletID(string _BulletID); 
 	virtual string GetBulletID(); 
 	virtual Collider* GetCollider(); 
@@ -45,7 +46,7 @@ public:
 	bool GetAlive(); 
 	
 	// animation
-	void SetPlayer(string id, float x, float y, int frameCount, int speed, SDL_RendererFlip flip = SDL_FLIP_NONE);
+	void SetPlayer(string id, float x, float y, int frameCount, int speed, int health, SDL_RendererFlip flip = SDL_FLIP_NONE);
 	virtual void Draw(); // vẽ animation
 	void Update(vector<Enemy*> Enemies); //  xử lý sự kiện trong này
 

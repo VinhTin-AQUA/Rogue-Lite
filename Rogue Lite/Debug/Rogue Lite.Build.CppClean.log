@@ -1,68 +1,28 @@
-c:\users\tinho\desktop\git\rogue lite\debug\vc143.pdb
-c:\users\tinho\desktop\git\rogue lite\debug\vc143.idb
-c:\users\tinho\desktop\git\rogue lite\debug\texturemanager.obj
-c:\users\tinho\desktop\git\rogue lite\debug\sound.obj
-c:\users\tinho\desktop\git\rogue lite\debug\player.obj
-c:\users\tinho\desktop\git\rogue lite\debug\mapparser.obj
-c:\users\tinho\desktop\git\rogue lite\debug\main.obj
-c:\users\tinho\desktop\git\rogue lite\debug\input.obj
-c:\users\tinho\desktop\git\rogue lite\debug\hitfire.obj
-c:\users\tinho\desktop\git\rogue lite\debug\gamemap.obj
-c:\users\tinho\desktop\git\rogue lite\debug\explosion.obj
-c:\users\tinho\desktop\git\rogue lite\debug\engine.obj
-c:\users\tinho\desktop\git\rogue lite\debug\enemy_3.obj
-c:\users\tinho\desktop\git\rogue lite\debug\enemy_2.obj
-c:\users\tinho\desktop\git\rogue lite\debug\enemy_1.obj
-c:\users\tinho\desktop\git\rogue lite\debug\enemy.obj
-c:\users\tinho\desktop\git\rogue lite\debug\enemies.obj
-c:\users\tinho\desktop\git\rogue lite\debug\collisionhandler.obj
-c:\users\tinho\desktop\git\rogue lite\debug\collider.obj
-c:\users\tinho\desktop\git\rogue lite\debug\character.obj
-c:\users\tinho\desktop\git\rogue lite\debug\bullet.obj
 c:\users\tinho\desktop\git\rogue lite\debug\animation.obj
-c:\users\tinho\desktop\git\rogue lite\debug\transform.obj
-c:\users\tinho\desktop\git\rogue lite\debug\tinyxmlparser.obj
-c:\users\tinho\desktop\git\rogue lite\debug\tinyxmlerror.obj
-c:\users\tinho\desktop\git\rogue lite\debug\tinyxml.obj
-c:\users\tinho\desktop\git\rogue lite\debug\tinystr.obj
+c:\users\tinho\desktop\git\rogue lite\debug\bullet.obj
+c:\users\tinho\desktop\git\rogue lite\debug\character.obj
+c:\users\tinho\desktop\git\rogue lite\debug\collider.obj
+c:\users\tinho\desktop\git\rogue lite\debug\collisionhandler.obj
+c:\users\tinho\desktop\git\rogue lite\debug\enemy.obj
+c:\users\tinho\desktop\git\rogue lite\debug\enemy_1.obj
+c:\users\tinho\desktop\git\rogue lite\debug\enemy_2.obj
+c:\users\tinho\desktop\git\rogue lite\debug\enemy_3.obj
+c:\users\tinho\desktop\git\rogue lite\debug\engine.obj
+c:\users\tinho\desktop\git\rogue lite\debug\explosion.obj
+c:\users\tinho\desktop\git\rogue lite\debug\gamemap.obj
+c:\users\tinho\desktop\git\rogue lite\debug\hitfire.obj
+c:\users\tinho\desktop\git\rogue lite\debug\input.obj
+c:\users\tinho\desktop\git\rogue lite\debug\main.obj
+c:\users\tinho\desktop\git\rogue lite\debug\mapparser.obj
+c:\users\tinho\desktop\git\rogue lite\debug\player.obj
+c:\users\tinho\desktop\git\rogue lite\debug\sound.obj
+c:\users\tinho\desktop\git\rogue lite\debug\texturemanager.obj
 c:\users\tinho\desktop\git\rogue lite\debug\tilelayer.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\vc143.pdb
-c:\users\tinho\desktop\git - copy\rogue lite\debug\vc143.idb
-c:\users\tinho\desktop\git - copy\rogue lite\debug\texturemanager.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\sound.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\player.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\mapparser.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\main.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\input.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\hitfire.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\gamemap.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\explosion.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\engine.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\enemy_3.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\enemy_2.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\enemy_1.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\enemy.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\enemies.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\collisionhandler.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\collider.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\character.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\bullet.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\animation.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\transform.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\tinyxmlparser.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\tinyxmlerror.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\tinyxml.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\tinystr.obj
-c:\users\tinho\desktop\git - copy\rogue lite\debug\tilelayer.obj
-c:\users\tinho\desktop\git\rogue lite\debug\rogue lite.ilk
-c:\users\tinho\desktop\git\rogue lite\debug\rogue lite.exe
-c:\users\tinho\desktop\git\rogue lite\debug\rogue lite.pdb
-c:\users\tinho\desktop\git - copy\rogue lite\debug\rogue lite.exe
-c:\users\tinho\desktop\git - copy\rogue lite\debug\rogue lite.ilk
-c:\users\tinho\desktop\git - copy\rogue lite\debug\rogue lite.pdb
-c:\users\tinho\desktop\git - copy\rogue lite\debug\rogue lite.tlog\cl.command.1.tlog
-c:\users\tinho\desktop\git - copy\rogue lite\debug\rogue lite.tlog\cl.read.1.tlog
-c:\users\tinho\desktop\git - copy\rogue lite\debug\rogue lite.tlog\cl.write.1.tlog
-c:\users\tinho\desktop\git - copy\rogue lite\debug\rogue lite.tlog\link.command.1.tlog
-c:\users\tinho\desktop\git - copy\rogue lite\debug\rogue lite.tlog\link.read.1.tlog
-c:\users\tinho\desktop\git - copy\rogue lite\debug\rogue lite.tlog\link.write.1.tlog
+c:\users\tinho\desktop\git\rogue lite\debug\tinystr.obj
+c:\users\tinho\desktop\git\rogue lite\debug\tinyxml.obj
+c:\users\tinho\desktop\git\rogue lite\debug\tinyxmlerror.obj
+c:\users\tinho\desktop\git\rogue lite\debug\tinyxmlparser.obj
+c:\users\tinho\desktop\git\rogue lite\debug\transform.obj
+c:\users\tinho\desktop\git\rogue lite\debug\vc143.idb
+c:\users\tinho\desktop\git\rogue lite\debug\vc143.pdb
+c:\users\tinho\desktop\git\rogue lite\debug\rogue lite.tlog\cl.command.1.tlog

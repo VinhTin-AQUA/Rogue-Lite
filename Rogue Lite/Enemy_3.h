@@ -14,7 +14,7 @@ class Enemy_3 : public Enemy
 private:
 	int TimerBullet; // thời gian tồn tại của đạn enemy
 public:
-	Enemy_3(SDL_RendererFlip flip = SDL_FLIP_NONE); // khởi tạo enemy hoạt động trên màng hình
+	Enemy_3(int level, SDL_RendererFlip flip = SDL_FLIP_NONE); // khởi tạo enemy hoạt động trên màng hình
 
 	void DecReload();
 	int GetReload();

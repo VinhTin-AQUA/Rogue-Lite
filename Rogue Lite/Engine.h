@@ -21,6 +21,9 @@ private:
 	GameMap* m_LevelMap; // chứa map
 	int MapID; // chỉ số map
 	
+	string name;
+	int level;
+	int score;
 
 public:
 	static Engine* GetInstance();
@@ -43,10 +46,16 @@ public:
 
 	// input - output
 	int Input();
-	void Output();
+	bool Output();
 
 	// tutorial
 	void Tutorial();
 	void Score();
+
+	// inpunt name
+	int InputName();
+
+	// date and time
+	string DateTime();
 };
 
