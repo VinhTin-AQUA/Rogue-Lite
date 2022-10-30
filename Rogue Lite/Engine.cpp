@@ -292,9 +292,9 @@ void Engine::Reset() // reset màng mới
 		else if (MapID > 3) // tro ve map 1
 		{
 			MapID = 1;
-			level++;
 			m_LevelMap = MapParser::GetInstance()->GetMap("MAP1");
 		}
+		level++;
 		sound.playMusic(THROUGH_LEVEL, 1);
 		enemies->Reset(level);
 		player->ResetHealth();
@@ -760,7 +760,7 @@ void Engine::Score()
 				int texW = 0;
 				int texH = 0;
 				SDL_QueryTexture(fontTexture, NULL, NULL, &texW, &texH);
-				SDL_Rect dstrect = { 520, 200 + i, texW, texH };
+				dstrect = { 480, 200 + i, texW, texH };
 				SDL_RenderCopy(Renderer, fontTexture, NULL, &dstrect);
 
 				SDL_DestroyTexture(fontTexture);
@@ -939,7 +939,7 @@ void Engine::WriteInfor()
 	int texW = 0;
 	int texH = 0;
 	SDL_QueryTexture(fontTexture, NULL, NULL, &texW, &texH);
-	SDL_Rect dstrect = { 300, -5, texW, texH };
+	SDL_Rect dstrect = { 350, -5, texW, texH };
 
 	SDL_RenderCopy(Renderer, fontTexture, NULL, &dstrect);
 	SDL_DestroyTexture(fontTexture);
