@@ -73,7 +73,6 @@ bool Engine::Init() // hàm khởi tạo trò chơi, nếu khởi tạo thành c
 	// enemy 3
 	TextureManager::GetInstance()->Load("Enemy_3", "images\\enemy_3\\Enemy_3.png"); // tải ảnh enemy 3
 	TextureManager::GetInstance()->Load("Bullet_Enemy_3", "images\\enemy_3\\Bullet_Enemy_3.png"); // tải ảnh đạn enemy 3
-	TextureManager::GetInstance()->Load("Red_Circle", "images\\enemy_3\\red_circle.png"); // tải ảnh đạn enemy 3
 
 	// Explosion
 	TextureManager::GetInstance()->Load("Explosion_1", "images\\Exploision\\Explosion.png"); // tải vụ nổ khi enemies bị tiêu diệt
@@ -88,55 +87,46 @@ bool Engine::Init() // hàm khởi tạo trò chơi, nếu khởi tạo thành c
 	TextureManager::GetInstance()->Load("health_10", "images\\health\\100.png");
 
 	// menu
-	TextureManager::GetInstance()->Load("bgMenu", "images\\background\\bgMenu.jpg");
 	TextureManager::GetInstance()->Load("play", "images\\background\\play.png");
 	TextureManager::GetInstance()->Load("tutorial", "images\\background\\tutorial.png");
 	TextureManager::GetInstance()->Load("score", "images\\background\\score.png");
 	TextureManager::GetInstance()->Load("quit", "images\\background\\quit.png");
 
-	//menu click
+	//menu click list
 	TextureManager::GetInstance()->Load("playClick", "images\\background\\playClick.png");
 	TextureManager::GetInstance()->Load("tutorialClick", "images\\background\\tutorialClick.png");
 	TextureManager::GetInstance()->Load("scoreClick", "images\\background\\scoreClick.png");
 	TextureManager::GetInstance()->Load("quitClick", "images\\background\\quitClick.png");
 
-	// menu
-	TextureManager::GetInstance()->Load("bgMenu", "images\\background\\bgMenu.jpg");
-	TextureManager::GetInstance()->Load("play", "images\\background\\play.png");
-	TextureManager::GetInstance()->Load("tutorial", "images\\background\\tutorial.png");
-	TextureManager::GetInstance()->Load("score", "images\\background\\score.png");
-	TextureManager::GetInstance()->Load("quit", "images\\background\\quit.png");
-
-	//menu click
-	TextureManager::GetInstance()->Load("playClick", "images\\background\\playClick.png");
-	TextureManager::GetInstance()->Load("tutorialClick", "images\\background\\tutorialClick.png");
-	TextureManager::GetInstance()->Load("scoreClick", "images\\background\\scoreClick.png");
-	TextureManager::GetInstance()->Load("quitClick", "images\\background\\quitClick.png");
+	// menu BG
+	TextureManager::GetInstance()->Load("menuBG", "images\\background\\BG_Menu.jpg");
 
 	// tutorial bg, socre bg
 	TextureManager::GetInstance()->Load("tutorialBG", "images\\background\\tutorialBG.png");
 	TextureManager::GetInstance()->Load("scoreBG", "images\\background\\scoreBG.png");
 
-	// back
+	// back btn
 	TextureManager::GetInstance()->Load("back", "images\\background\\back.png");
 	TextureManager::GetInstance()->Load("backCLick", "images\\background\\backClick.png");
 
-	// menu
+	// menu btn
 	TextureManager::GetInstance()->Load("menu", "images\\background\\menu.png");
 	TextureManager::GetInstance()->Load("menuClick", "images\\background\\menuClick.png");
 
-	// exit
+
+
+	// exit btn
 	TextureManager::GetInstance()->Load("exit", "images\\background\\exit.png");
 	TextureManager::GetInstance()->Load("exitClick", "images\\background\\exitClick.png");
 
-	// replay
+	// replay btn
 	TextureManager::GetInstance()->Load("rePlay", "images\\background\\RePlay.png");
 	TextureManager::GetInstance()->Load("rePlayClick", "images\\background\\RePlayClick.png");
 
-	// input name
+	// input name bg
 	TextureManager::GetInstance()->Load("inputName", "images\\background\\InputName.png");
 
-	// enter
+	// enter btn
 	TextureManager::GetInstance()->Load("enter", "images\\background\\ENTER.png");
 	TextureManager::GetInstance()->Load("enterClick", "images\\background\\enterClick.png");
 
@@ -338,7 +328,7 @@ int Engine::Input()
 	// xóa kết xuất cũ
 	SDL_RenderClear(Renderer);
 
-	TextureManager::GetInstance()->Draw("bgMenu", 0, -40, 1280, 640);
+	TextureManager::GetInstance()->Draw("menuBG", 0, -40, 1280, 640);
 
 	TextureManager::GetInstance()->Draw("play", 540, 100, 200, 64);
 	TextureManager::GetInstance()->Draw("tutorial", 540, 200, 200, 64);
@@ -793,7 +783,7 @@ int Engine::InputName()
 	SDL_Event ev;
 
 	SDL_StartTextInput();
-	
+	if (name.compare("Name Player") == 0) name = "";
 	int i = 10;
 	while (isRunning)
 	{
@@ -814,8 +804,7 @@ int Engine::InputName()
 			}
 			else if (ev.type == SDL_TEXTINPUT)
 			{
-				if (name.compare("Name Player") == 0) name = "";
-				else if (name.length() <= 15)
+				if (name.length() <= 15)
 				{
 					name += ev.text.text;
 				}

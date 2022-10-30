@@ -52,7 +52,7 @@ Enemy_1::Enemy_1(int level, SDL_RendererFlip flip)
 	}
 
 	reload = rand() % (500 - level*30) ; // tốc độ ra đạn của eneemy
-	Health = level*5 +10; // health ban đầu của enemy
+	Health = level*2 +10; // health ban đầu của enemy
 	ExplosionID = "Explosion_1"; // chuỗi hoạt ảnh vụ nổ
 }
 
