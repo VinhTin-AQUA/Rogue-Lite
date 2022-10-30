@@ -12,16 +12,22 @@ int main(int argc, char* argv[])
 	do
 	{
 		if(t != 2) Engine::GetInstance()->Menu();
+		else
+		{
+			int check = Engine::GetInstance()->InputName();
+			if(check == -1) Engine::GetInstance()->Menu();
+		}
 		
 		while (Engine::GetInstance()->IsRunning())
 		{
 			Engine::GetInstance()->Update();
 			Engine::GetInstance()->Event();
 			Engine::GetInstance()->Render();
-			Engine::GetInstance()->Reset();
 		}
 		t = Engine::GetInstance()->Output();
 	} while (t != 0);
+
+
 
 	Engine::GetInstance()->Clean();
 	return 0;

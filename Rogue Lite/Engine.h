@@ -46,22 +46,19 @@ public:
 
 	// reset stage
 	void ResetStage();
-
 	// menu
 	void Menu();
-
 	// input - output
 	int Input();
 	int Output();
-
 	// tutorial
 	void Tutorial();
 	void Score();
-
 	// inpunt name
 	int InputName();
-
 	// date and time
 	string DateTime();
+	// write score
+	void WriteInfor();
 };
 

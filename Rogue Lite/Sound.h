@@ -35,7 +35,8 @@ enum
 {
 	ENTER_THE_GAME,
 	THE_END,
-	THROUGH_LEVEL
+	THROUGH_LEVEL,
+	CLICK
 };
 
 class Sound

@@ -200,6 +200,7 @@ void Engine::Render()
 		TextureManager::GetInstance()->Draw("health_10", 0, 0, 300, 40);
 		break;
 	}
+	WriteInfor();
 	SDL_RenderPresent(Renderer);
 }
 void Engine::Update()
@@ -238,6 +239,7 @@ void Engine::Update()
 		}
 	}
 	enemies->Update(player, player->GetAlive());
+	Reset();
 }
 
 void Engine::Quit() // khi bấm tắt trò chơi
@@ -395,18 +397,21 @@ int Engine::Input()
 				if (event.button.x >= 540 && event.button.x <= 740 &&
 					event.button.y >= 100 && event.button.y <= 164)
 				{
+					sound.playMusic(CLICK, 1);
 					TextureManager::GetInstance()->Draw("playClick", 540, 100, 200, 64);
 				}
 				// tutorial
 				else if (event.button.x >= 540 && event.button.x <= 740 &&
 					event.button.y >= 200 && event.button.y <= 264)
 				{
+					sound.playMusic(CLICK, 1);
 					TextureManager::GetInstance()->Draw("tutorialClick", 540, 200, 200, 64);
 				}
 				//score
 				else if (event.button.x >= 540 && event.button.x <= 740 &&
 					event.button.y >= 300 && event.button.y <= 364)
 				{
+					sound.playMusic(CLICK, 1);
 					TextureManager::GetInstance()->Draw("scoreClick", 540, 300, 200, 64);
 				}
 				// quit
@@ -532,7 +537,7 @@ int Engine::Output()
 			<< "data\\scores.txt" << "'" << endl;
 		return EXIT_FAILURE;
 	}
-	name = name + "\n" + "Score: " + to_string(score) + '\n' + "Time: " + DateTime() + +"\n--------------------\n";
+	name = name + "\n" + "Score: " + to_string(score) + '\n' + "Time: " + DateTime() + +"\n---------------------------\n";
 	string temp = "";
 	int i = 1;
 	while (getline(ifs, temp)) 
@@ -595,6 +600,7 @@ int Engine::Output()
 				if (event.button.x >= 500 && event.button.x <= 570 &&
 					event.button.y >= 400 && event.button.y <= 453)
 				{
+					sound.playMusic(CLICK, 1);
 					TextureManager::GetInstance()->Draw("menuClick", 520, 400, 70, 53);
 				}
 				// exit
@@ -607,6 +613,7 @@ int Engine::Output()
 				else if (event.button.x >= 720 && event.button.x <= 790 &&
 					event.button.y >= 400 && event.button.y <= 453)
 				{
+					sound.playMusic(CLICK, 1);
 					TextureManager::GetInstance()->Draw("rePlayClick", 720, 400, 70, 53);
 				}
 			}
@@ -658,6 +665,7 @@ void Engine::Tutorial()
 				if (event.button.x >= 10 && event.button.x <= 80 &&
 					event.button.y >= 10 && event.button.y <= 80)
 				{
+					sound.playMusic(CLICK, 1);
 					TextureManager::GetInstance()->Draw("backCLick", 10, 10, 70, 70);
 				}
 			}
@@ -710,6 +718,7 @@ void Engine::Score()
 				if (event.button.x >= 10 && event.button.x <= 80 &&
 					event.button.y >= 10 && event.button.y <= 80)
 				{
+					sound.playMusic(CLICK, 1);
 					TextureManager::GetInstance()->Draw("backCLick", 10, 10, 70, 70);
 				}
 			}
@@ -798,14 +807,15 @@ int Engine::InputName()
 			break;
 		case SDL_KEYDOWN:
 		case SDL_TEXTINPUT:
+			sound.playMusic(CLICK, 1);
 			if (ev.key.keysym.scancode == SDL_SCANCODE_BACKSPACE && name.length() > 0)
 			{
 				name = name.substr(0, name.length() - 1);
 			}
 			else if (ev.type == SDL_TEXTINPUT)
 			{
-				if (name.compare("Name Player") == 0) name = "TT: ";
-				if (name.length() <= 15)
+				if (name.compare("Name Player") == 0) name = "";
+				else if (name.length() <= 15)
 				{
 					name += ev.text.text;
 				}
@@ -814,7 +824,12 @@ int Engine::InputName()
 			{
 				SDL_StopTextInput();
 				SDL_DestroyTexture(textImage);
+				if (name.compare("") == 0) name = "Name Player";
 				return 0;
+			}
+			else if (ev.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+			{
+				exit(0);
 			}
 			if (textImage)
 			{
@@ -852,9 +867,10 @@ int Engine::InputName()
 				{
 					TextureManager::GetInstance()->Draw("enterClick", 565, 270, 150, 60);
 					SDL_RenderPresent(Renderer);
-
 					SDL_StopTextInput();
 					SDL_DestroyTexture(textImage);
+					if (name.compare("") == 0) name = "Name Player";
+
 					return 0;
 				}
 			}
@@ -866,12 +882,14 @@ int Engine::InputName()
 				if (ev.button.x >= 10 && ev.button.x <= 80 &&
 					ev.button.y >= 10 && ev.button.y <= 80)
 				{
+					sound.playMusic(CLICK, 1);
 					TextureManager::GetInstance()->Draw("backCLick", 10, 10, 70, 70);
 					SDL_RenderPresent(Renderer);
 				}
 				else if (ev.button.x >= 565 && ev.button.x <= 715 &&
 					ev.button.y >= 270 && ev.button.y <= 320)
 				{
+					sound.playMusic(CLICK, 1);
 					TextureManager::GetInstance()->Draw("enterClick", 565, 270, 150, 60);
 					SDL_RenderPresent(Renderer);
 				}
@@ -907,4 +925,22 @@ string Engine::DateTime()
 	string time = to_string(Day) + '/' + to_string(Month) + '/' + to_string(Year) + " - " +
 		to_string(hour) + ':' + to_string(min) + ':' + to_string(sec);
 	return time;
+}
+
+void Engine::WriteInfor()
+{
+	TTF_Font* font = TTF_OpenFont("font\\m5x7.ttf", 50);
+	SDL_Color color1 = { 218, 0, 0 };
+	string _score = to_string(score);
+
+	SDL_Surface* surface = TTF_RenderText_Solid(font, _score.c_str(), color1);
+	SDL_Texture* fontTexture = SDL_CreateTextureFromSurface(Renderer, surface);
+	SDL_FreeSurface(surface);
+	int texW = 0;
+	int texH = 0;
+	SDL_QueryTexture(fontTexture, NULL, NULL, &texW, &texH);
+	SDL_Rect dstrect = { 300, -5, texW, texH };
+
+	SDL_RenderCopy(Renderer, fontTexture, NULL, &dstrect);
+	SDL_DestroyTexture(fontTexture);
 }

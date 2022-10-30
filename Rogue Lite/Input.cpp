@@ -22,6 +22,7 @@ void Input::Listen() // lắng nghe sự kiện bàn phím
 		switch (event.type)
 		{
 		case SDL_QUIT:
+			exit(0);
 			Engine::GetInstance()->Quit();
 			break;
 		case SDL_KEYDOWN:

@@ -16,6 +16,7 @@ Sound::Sound()
 	musics[0] = Mix_LoadMUS("Sounds\\enter_the_game.mp3");
 	musics[1] = Mix_LoadMUS("Sounds\\the_end.mp3");
 	musics[2] = Mix_LoadMUS("Sounds\\through_the_level.mp3");
+	musics[3] = Mix_LoadMUS("Sounds\\click.mp3");
 
 }
 Sound::~Sound()
