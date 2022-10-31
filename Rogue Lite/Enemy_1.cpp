@@ -3,7 +3,7 @@
 #include "CollisionHandler.h"
 #include "cmath"
 
-Enemy_1::Enemy_1(int level, SDL_RendererFlip flip)
+Enemy_1::Enemy_1(int _level, SDL_RendererFlip flip)
 {
 	float d[] = { -3,3 }; // mảng định hướng di chuyển cho enemy
 
@@ -50,7 +50,7 @@ Enemy_1::Enemy_1(int level, SDL_RendererFlip flip)
 	{
 		dy = 0;
 	}
-
+	level = _level;
 	reload = rand() % (500 - level*30) ; // tốc độ ra đạn của eneemy
 	Health = level*2 +10; // health ban đầu của enemy
 	ExplosionID = "Explosion_1"; // chuỗi hoạt ảnh vụ nổ
@@ -80,8 +80,8 @@ void Enemy_1::AddBullet(string _BulletTextureID, float x_E, float y_E, int w_E, 
 
 
 	// khoản di chuyển đạn của enemy
-	float _dx = (x_Player - x_Enemy) / (ALIEN_BULLET_SPEED * distance / 2.5f);
-	float _dy = (y_Player - y_Enemy) / (ALIEN_BULLET_SPEED * distance / 2.5f);
+	float _dx = (x_Player - x_Enemy + level*2) / (ALIEN_BULLET_SPEED * distance / 2.5f);
+	float _dy = (y_Player - y_Enemy + level*2) / (ALIEN_BULLET_SPEED * distance / 2.5f);
 
 	// tính góc xoay
 	float h = abs(y_Player - y_Enemy); 

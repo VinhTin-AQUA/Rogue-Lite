@@ -13,7 +13,8 @@ class Enemy : public Character
 {
 protected:
 	SDL_Texture* texture;
-	string ExplosionID; 
+	string ExplosionID;
+	int level;
 public:
 	Enemy();
 	virtual float GetX();

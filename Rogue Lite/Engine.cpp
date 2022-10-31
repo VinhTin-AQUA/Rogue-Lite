@@ -534,7 +534,7 @@ int Engine::Output()
 	{
 		name += temp + '\n';
 		i++;
-		if (i == 16) break;
+		if (i == 49) break;
 	}
 	ifs.close();
 
@@ -560,14 +560,14 @@ int Engine::Output()
 			if (event.button.button == SDL_BUTTON_LEFT)
 			{
 				// menu
-				if (event.button.x >= 500 && event.button.x <= 570 &&
+				if (event.button.x >= 520 && event.button.x <= 590 &&
 					event.button.y >= 400 && event.button.y <= 453)
 				{
 					TextureManager::GetInstance()->Draw("menu", 520, 400, 70, 53);
 					return 1;
 				}
 				// exit
-				else if (event.button.x >= 600 && event.button.x <= 670 &&
+				else if (event.button.x >= 620 && event.button.x <= 690 &&
 					event.button.y >= 400 && event.button.y <= 453)
 				{
 					TextureManager::GetInstance()->Draw("exit", 620, 400, 70, 53);
@@ -587,14 +587,14 @@ int Engine::Output()
 			if (event.button.button == SDL_BUTTON_LEFT)
 			{
 				// menu
-				if (event.button.x >= 500 && event.button.x <= 570 &&
+				if (event.button.x >= 520 && event.button.x <= 590 &&
 					event.button.y >= 400 && event.button.y <= 453)
 				{
 					sound.playMusic(CLICK, 1);
 					TextureManager::GetInstance()->Draw("menuClick", 520, 400, 70, 53);
 				}
 				// exit
-				else if (event.button.x >= 600 && event.button.x <= 670 &&
+				else if (event.button.x >= 620 && event.button.x <= 690 &&
 					event.button.y >= 400 && event.button.y <= 453)
 				{
 					TextureManager::GetInstance()->Draw("exitClick", 620, 400, 70, 53);

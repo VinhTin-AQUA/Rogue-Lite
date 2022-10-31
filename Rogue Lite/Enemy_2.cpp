@@ -3,7 +3,7 @@
 #include "CollisionHandler.h"
 #include "cmath"
 
-Enemy_2::Enemy_2(int level, SDL_RendererFlip flip)
+Enemy_2::Enemy_2(int _level, SDL_RendererFlip flip)
 {
 	float d[] = { -3,3 }; // mảng định hướng cho enemy
 
@@ -51,6 +51,7 @@ Enemy_2::Enemy_2(int level, SDL_RendererFlip flip)
 	{
 		dy = 0;
 	}
+	level = _level;
 	reload = rand() % (500 - level*30); // tốc độ ra đạn của eneemy
 	Health = level*2 + HEALTH_ENEMY; // health ban đầu của enemy
 	ExplosionID = "Explosion_1"; // chuỗi hoạt ảnh vụ nổ
@@ -85,24 +86,24 @@ void Enemy_2::AddBullet(string _BulletTextureID, float x_E, float y_E, int w_E, 
 	{
 		// bắn lên
 		_dx = 0;
-		_dy = -BULLET_SPEED;
+		_dy = -BULLET_SPEED - level*2;
 		Bullet* bullet1 = new Bullet(BulletID, x_E, y_E, w_E, h_E, frameBullet, _dx, _dy);
 		_Bullets.push_back(bullet1);
 
 		// bắn xuống
 		_dx = 0;
-		_dy = +BULLET_SPEED;
+		_dy = BULLET_SPEED + level*2;
 		Bullet* bullet2 = new Bullet(BulletID, x_E, y_E, w_E, h_E, frameBullet, _dx, _dy);
 		_Bullets.push_back(bullet2);
 
 		// bắng trái
-		_dx = -BULLET_SPEED;
+		_dx = -BULLET_SPEED - level*2;
 		_dy = 0;
 		Bullet* bullet3 = new Bullet(BulletID, x_E, y_E, w_E, h_E, frameBullet, _dx, _dy);
 		_Bullets.push_back(bullet3);
 
 		// bắn phải
-		_dx = BULLET_SPEED;
+		_dx = BULLET_SPEED + level*2;
 		_dy = 0;
 		Bullet* bullet4 = new Bullet(BulletID, x_E, y_E, w_E, h_E, frameBullet, _dx, _dy);
 		_Bullets.push_back(bullet4);
