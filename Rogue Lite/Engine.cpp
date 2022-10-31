@@ -701,7 +701,7 @@ void Engine::Score()
 				}
 			}
 			break;
-		case SDL_MOUSEBUTTONDOWN: 
+		case SDL_MOUSEBUTTONDOWN:
 			if (event.button.button == SDL_BUTTON_LEFT)
 			{
 				// back
@@ -730,21 +730,42 @@ void Engine::Score()
 
 			TTF_Font* font = TTF_OpenFont("font\\m5x7.ttf", 30);
 			SDL_Color color1 = { 134, 89, 235 };
-			SDL_Color color = { 92, 238, 235 };
+			SDL_Color color2 = { 92, 238, 235 };
+			SDL_Color color3 = { 43, 221, 60 };
+			SDL_Color color4 = { 223, 45, 202 };
 
-			SDL_Surface* surface = TTF_RenderText_Solid(font, "============ SCORES ============", color1);
+
+			SDL_Surface* surface = TTF_RenderText_Solid(font, "==================================== SCORES ====================================", color1);
 			SDL_Texture* fontTexture = SDL_CreateTextureFromSurface(Renderer, surface);
 			SDL_FreeSurface(surface);
 			int texW = 0;
 			int texH = 0;
 			SDL_QueryTexture(fontTexture, NULL, NULL, &texW, &texH);
-			SDL_Rect dstrect = { 480, 200, texW, texH };
+			SDL_Rect dstrect = { 280, 170, texW, texH };
 			SDL_RenderCopy(Renderer, fontTexture, NULL, &dstrect);
 
 			int i = 40;
 			while (getline(ifs, str)) {
-				
-				surface = TTF_RenderText_Solid(font, str.c_str(), color);
+
+				surface = TTF_RenderText_Solid(font, str.c_str(), color2);
+				fontTexture = SDL_CreateTextureFromSurface(Renderer, surface);
+				SDL_FreeSurface(surface);
+				int texW = 0;
+				int texH = 0;
+				SDL_QueryTexture(fontTexture, NULL, NULL, &texW, &texH);
+				dstrect = { 120, 200 + i, texW, texH };
+				SDL_RenderCopy(Renderer, fontTexture, NULL, &dstrect);
+
+				SDL_DestroyTexture(fontTexture);
+				i += 20;
+				if (i == 360) break;
+			}
+
+			// =============================================
+			i = 40;
+			while (getline(ifs, str)) {
+
+				surface = TTF_RenderText_Solid(font, str.c_str(), color3);
 				fontTexture = SDL_CreateTextureFromSurface(Renderer, surface);
 				SDL_FreeSurface(surface);
 				int texW = 0;
@@ -757,6 +778,24 @@ void Engine::Score()
 				i += 20;
 				if (i == 360) break;
 			}
+			// ==============================================
+			i = 40;
+			while (getline(ifs, str)) {
+
+				surface = TTF_RenderText_Solid(font, str.c_str(), color4);
+				fontTexture = SDL_CreateTextureFromSurface(Renderer, surface);
+				SDL_FreeSurface(surface);
+				int texW = 0;
+				int texH = 0;
+				SDL_QueryTexture(fontTexture, NULL, NULL, &texW, &texH);
+				dstrect = { 860, 200 + i, texW, texH };
+				SDL_RenderCopy(Renderer, fontTexture, NULL, &dstrect);
+
+				SDL_DestroyTexture(fontTexture);
+				i += 20;
+				if (i == 360) break;
+			}
+
 			TTF_CloseFont(font);
 			ifs.close();
 			break;
