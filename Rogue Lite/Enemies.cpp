@@ -116,8 +116,7 @@ void Enemies::DeleteEnemy(int i)
 {
 	// thêm vụ nổ
 	int Width = 0, Height = 0;
-	SDL_QueryTexture(TextureManager::GetInstance()->GetTexture(_Enemies[i]->GetExplosionID()), NULL, NULL,
-		&Width, &Height);
+	SDL_QueryTexture(TextureManager::GetInstance()->GetTexture(_Enemies[i]->GetExplosionID()), NULL, NULL,&Width, &Height);
 	Width = Width / 10;
 
 	Explosion* e = new Explosion(_Enemies[i]->GetExplosionID(), _Enemies[i]->GetX(),
