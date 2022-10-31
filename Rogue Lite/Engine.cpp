@@ -328,7 +328,7 @@ int Engine::Input()
 	// xóa kết xuất cũ
 	SDL_RenderClear(Renderer);
 
-	TextureManager::GetInstance()->Draw("menuBG", 0, -40, 1280, 640);
+	TextureManager::GetInstance()->Draw("menuBG", 0, 0, 1280, 640);
 
 	TextureManager::GetInstance()->Draw("play", 540, 100, 200, 64);
 	TextureManager::GetInstance()->Draw("tutorial", 540, 200, 200, 64);
