@@ -429,10 +429,10 @@ int Engine::Output()
 	sound.playMusic(THE_END, 1);
 	SDL_RenderClear(Renderer);
 	TextureManager::GetInstance()->Draw("scoreBG", 0, 0, 1280, 640);
-	TextureManager::GetInstance()->Draw("menu", 520, 400, 70, 53);
-	TextureManager::GetInstance()->Draw("exit", 620, 400, 70, 53);
-	TextureManager::GetInstance()->Draw("rePlay", 720, 400, 70, 53);	
-	
+	TextureManager::GetInstance()->Draw("menu", 500, 400, 70, 53);
+	TextureManager::GetInstance()->Draw("exit", 600, 400, 70, 53);
+	TextureManager::GetInstance()->Draw("rePlay", 700, 400, 70, 53);	
+
 	TTF_Font* font = TTF_OpenFont("font\\m5x7.ttf", 30);
 	if (font == nullptr)
 	{
@@ -453,8 +453,8 @@ int Engine::Output()
 
 	srcRest.x = 0;
 	srcRest.y = 0;
-	desRect.x = 500;
-	desRect.y = 200;
+	desRect.x = 480;
+	desRect.y = 170;
 	desRect.w = srcRest.w;
 	desRect.h = srcRest.h;
 
@@ -471,7 +471,7 @@ int Engine::Output()
 
 	srcRest.x = 0;
 	srcRest.y = 0;
-	desRect.x = 540;
+	desRect.x = 500;
 	desRect.y = 240;
 
 	desRect.w = srcRest.w;
@@ -488,7 +488,7 @@ int Engine::Output()
 
 	srcRest.x = 0;
 	srcRest.y = 0;
-	desRect.x = 540;
+	desRect.x = 500;
 	desRect.y = 280;
 
 	desRect.w = srcRest.w;
@@ -507,7 +507,7 @@ int Engine::Output()
 
 	srcRest.x = 0;
 	srcRest.y = 0;
-	desRect.x = 540;
+	desRect.x = 500;
 	desRect.y = 320;
 
 	desRect.w = srcRest.w;
@@ -560,24 +560,24 @@ int Engine::Output()
 			if (event.button.button == SDL_BUTTON_LEFT)
 			{
 				// menu
-				if (event.button.x >= 520 && event.button.x <= 590 &&
+				if (event.button.x >= 500 && event.button.x <= 570 &&
 					event.button.y >= 400 && event.button.y <= 453)
 				{
-					TextureManager::GetInstance()->Draw("menu", 520, 400, 70, 53);
+					TextureManager::GetInstance()->Draw("menu", 500, 400, 70, 53);
 					return 1;
 				}
 				// exit
-				else if (event.button.x >= 620 && event.button.x <= 690 &&
+				else if (event.button.x >= 600 && event.button.x <= 670 &&
 					event.button.y >= 400 && event.button.y <= 453)
 				{
-					TextureManager::GetInstance()->Draw("exit", 620, 400, 70, 53);
+					TextureManager::GetInstance()->Draw("exit", 600, 400, 70, 53);
 					exit(0);
 				}
 				// replay
-				else if (event.button.x >= 720 && event.button.x <= 790 &&
+				else if (event.button.x >= 700 && event.button.x <= 770 &&
 					event.button.y >= 400 && event.button.y <= 453)
 				{
-					TextureManager::GetInstance()->Draw("rePlay", 720, 400, 70, 53);
+					TextureManager::GetInstance()->Draw("rePlay", 700, 400, 70, 53);
 					ResetStage();
 					return 2;
 				}
@@ -587,24 +587,24 @@ int Engine::Output()
 			if (event.button.button == SDL_BUTTON_LEFT)
 			{
 				// menu
-				if (event.button.x >= 520 && event.button.x <= 590 &&
+				if (event.button.x >= 500 && event.button.x <= 570 &&
 					event.button.y >= 400 && event.button.y <= 453)
 				{
 					sound.playMusic(CLICK, 1);
-					TextureManager::GetInstance()->Draw("menuClick", 520, 400, 70, 53);
+					TextureManager::GetInstance()->Draw("menuClick", 500, 400, 70, 53);
 				}
 				// exit
-				else if (event.button.x >= 620 && event.button.x <= 690 &&
+				else if (event.button.x >= 600 && event.button.x <= 670 &&
 					event.button.y >= 400 && event.button.y <= 453)
 				{
-					TextureManager::GetInstance()->Draw("exitClick", 620, 400, 70, 53);
+					TextureManager::GetInstance()->Draw("exitClick", 600, 400, 70, 53);
 				}
 				// replay
-				else if (event.button.x >= 720 && event.button.x <= 790 &&
+				else if (event.button.x >= 700 && event.button.x <= 770 &&
 					event.button.y >= 400 && event.button.y <= 453)
 				{
 					sound.playMusic(CLICK, 1);
-					TextureManager::GetInstance()->Draw("rePlayClick", 720, 400, 70, 53);
+					TextureManager::GetInstance()->Draw("rePlayClick", 700, 400, 70, 53);
 				}
 			}
 			break;
