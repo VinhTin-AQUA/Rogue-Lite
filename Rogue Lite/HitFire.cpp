@@ -1,4 +1,4 @@
-﻿#include "HitFire.h"
+﻿														#include "HitFire.h"
 
 HitFire* HitFire::Instance = nullptr;
 HitFire* HitFire::GetInstance()
